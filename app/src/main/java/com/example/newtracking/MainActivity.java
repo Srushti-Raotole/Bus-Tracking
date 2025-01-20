@@ -17,7 +17,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
-    private EditText emailEditText, passwordEditText;
+    private EditText emailEditText, passwordEditText, nameEditText, editTextNumber, editTextPhNumber;
     private RadioGroup roleRadioGroup;
     private RadioButton selectedRoleButton;
     private Button registerButton;
@@ -35,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.passwordEditText);
         roleRadioGroup = findViewById(R.id.roleRadioGroup);
         registerButton = findViewById(R.id.registerButton);
+        nameEditText=findViewById(R.id.nameEditText);
+        editTextNumber=findViewById(R.id.editTextNumber);
+        editTextPhNumber=findViewById(R.id.editTextPhNumber);
 
         // Initialize Firebase instances
         mAuth = FirebaseAuth.getInstance();
@@ -52,9 +55,14 @@ public class MainActivity extends AppCompatActivity {
     private void registerUser() {
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
+        String name=nameEditText.getText().toString().trim();
+        String crn=editTextNumber.getText().toString().trim();
+        String phNumber=editTextPhNumber.getText().toString().trim();
+
 
         // Get selected role
         int selectedRoleId = roleRadioGroup.getCheckedRadioButtonId();
+
         if (selectedRoleId == -1) {
             Toast.makeText(this, "Please select a role", Toast.LENGTH_SHORT).show();
             return;
@@ -63,12 +71,24 @@ public class MainActivity extends AppCompatActivity {
         String role = selectedRoleButton.getText().toString();
 
         // Validate inputs
+        if (TextUtils.isEmpty(name)) {
+            nameEditText.setError("Name is required!");
+            return;
+        }
+        if (TextUtils.isEmpty(crn)) {
+            editTextNumber.setError("CRN is required!");
+            return;
+        }
         if (TextUtils.isEmpty(email)) {
             emailEditText.setError("Email is required!");
             return;
         }
         if (TextUtils.isEmpty(password)) {
             passwordEditText.setError("Password is required!");
+            return;
+        }
+        if (TextUtils.isEmpty(phNumber)) {
+            editTextPhNumber.setError("Phone Number is required!");
             return;
         }
         if (password.length() < 6) {
@@ -82,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         // Save user information in Firebase Realtime Database
                         String userId = mAuth.getCurrentUser().getUid();
-                        User user = new User(email, role);
+                        User user = new User(name,crn, email, role,phNumber);
                         databaseReference.child(userId).setValue(user)
                                 .addOnCompleteListener(task1 -> {
                                     if (task1.isSuccessful()) {

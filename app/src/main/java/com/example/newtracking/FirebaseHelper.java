@@ -11,7 +11,7 @@ public class FirebaseHelper {
         userDatabase = FirebaseDatabase.getInstance().getReference("Users");
     }
 
-    public void saveUser(String userId, String email, String role) {
-        userDatabase.child(userId).setValue(new User(email, role));
+    public void saveUser(String userId, String name, String crn,String email, String role,String phNumber) {
+        userDatabase.child(userId).setValue(new User(name,crn,email, role, phNumber));
     }
 }
