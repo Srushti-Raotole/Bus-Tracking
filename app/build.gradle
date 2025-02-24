@@ -31,6 +31,19 @@ android {
 
 dependencies {
 
+    dependencies {
+        // Firebase Realtime Database
+        implementation 'com.google.firebase:firebase-database:20.3.0'
+        implementation 'com.google.firebase:firebase-auth:22.3.1'
+
+        // OkHttp for API Requests (like OpenRouteService)
+        implementation 'com.squareup.okhttp3:okhttp:4.9.3'
+
+        // Google Play Services for GPS Tracking
+        implementation 'com.google.android.gms:play-services-location:21.0.1'
+    }
+
+
 // Location Tracking
     implementation 'com.google.android.gms:play-services-location:21.0.1'
 
